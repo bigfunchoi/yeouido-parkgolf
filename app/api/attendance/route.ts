@@ -1,0 +1,7 @@
+import {NextRequest,NextResponse} from "next/server";
+import {neon} from "@neondatabase/serverless";
+const PEOPLE=["장선순","진도홍","이애자","노재돈","박윤경","조성완","오정화","김성규","이미경","박인규","김미숙","임임환"];
+function db(){if(!process.env.DATABASE_URL)throw new Error("DATABASE_URL is missing");return neon(process.env.DATABASE_URL)}
+async function ensure(){const sql=db();await sql`CREATE TABLE IF NOT EXISTS attendance (date date NOT NULL, name text NOT NULL, status text NOT NULL, updated_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(date,name))`;}
+export async function GET(req:NextRequest){try{await ensure();const date=req.nextUrl.searchParams.get("date");if(!date)return NextResponse.json({rows:[]});const sql=db();const data=await sql`SELECT name,status FROM attendance WHERE date=${date} ORDER BY name`;const map=new Map(data.map((x:any)=>[x.name,x.status]));return NextResponse.json({rows:PEOPLE.map(name=>({name,status:map.get(name)||""}))})}catch(e){return NextResponse.json({error:"database error"},{status:500})}}
+export async function POST(req:NextRequest){try{await ensure();const {date,name,status}=await req.json();if(!PEOPLE.includes(name)||!["참석","불참"].includes(status)||!date)return NextResponse.json({ok:false},{status:400});const sql=db();await sql`INSERT INTO attendance(date,name,status) VALUES(${date},${name},${status}) ON CONFLICT(date,name) DO UPDATE SET status=EXCLUDED.status,updated_at=now()`;return NextResponse.json({ok:true})}catch(e){return NextResponse.json({ok:false},{status:500})}}
