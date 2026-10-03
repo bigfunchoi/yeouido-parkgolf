@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f7d52">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="우리 파크골프 공동 출석부">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon-192.png">
+  <title>우리 파크골프 공동 출석부</title>
+  <style>
+    *{box-sizing:border-box} body{margin:0;background:#f4f8f5;color:#203228;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
+    .wrap{max-width:720px;margin:auto;padding:14px 14px 32px}.hero{background:linear-gradient(135deg,#2f7d52,#5aa96f);color:#fff;border-radius:24px;padding:18px 18px 16px;box-shadow:0 8px 24px #235c3a26}
+    .brand{display:flex;gap:13px;align-items:center}.brand img{width:66px;height:66px;border-radius:18px;object-fit:cover;background:#fff}.title{font-weight:800;font-size:22px;line-height:1.25}.sub{font-size:13px;opacity:.9;margin-top:4px}
+    .datebox{margin-top:14px;background:#fff;border-radius:18px;padding:13px;box-shadow:0 4px 16px #234b3312}.dateRow{display:flex;gap:8px;align-items:center}.dateRow button{border:0;background:#edf5ef;border-radius:12px;padding:10px 13px;font-size:18px}.dateInput{flex:1;border:1px solid #d8e5dc;border-radius:12px;padding:10px;font-size:16px;font-weight:700;text-align:center;background:#fff}
+    .dateLabel{text-align:center;margin-top:8px;font-weight:700}.hint{text-align:center;color:#6c7b72;font-size:12px;margin-top:4px}
+    .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.sum{background:#fff;border-radius:16px;padding:11px;text-align:center;box-shadow:0 3px 12px #234b3310}.sum b{display:block;font-size:21px}.sum span{font-size:12px;color:#68776e}.att b{color:#2f7d52}.abs b{color:#c24d4d}.und b{color:#b48625}
+    .me{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 16px #234b3312;margin-bottom:12px}.me h2{font-size:16px;margin:0 0 9px}.select{width:100%;padding:12px;border:1px solid #d8e5dc;border-radius:12px;font-size:15px;background:#fff}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.status{border:0;border-radius:12px;padding:12px;font-weight:800;font-size:14px}.status.active{outline:3px solid #8bc89e;transform:translateY(-1px)}.yes{background:#e1f3e6;color:#21673d}.no{background:#fae5e5;color:#a63e3e}.maybe{background:#fff1cf;color:#8b681c}
+    .list{background:#fff;border-radius:18px;padding:12px;box-shadow:0 4px 16px #234b3312}.list h2{font-size:16px;margin:2px 2px 10px}.person{display:grid;grid-template-columns:1fr auto;align-items:center;padding:10px 4px;border-bottom:1px solid #eef2ef}.person:last-child{border-bottom:0}.name{font-weight:700}.mine{font-size:11px;color:#2f7d52;margin-left:5px}.pill{min-width:54px;text-align:center;padding:6px 9px;border-radius:999px;font-size:12px;font-weight:800}.p-yes{background:#e1f3e6;color:#21673d}.p-no{background:#fae5e5;color:#a63e3e}.p-maybe{background:#fff1cf;color:#8b681c}.loading{text-align:center;color:#78877e;padding:24px}.error{background:#fff0f0;color:#a43c3c;padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px}
+    .footer{text-align:center;color:#809087;font-size:11px;margin-top:14px}.share{margin-top:10px;width:100%;border:0;background:#eff5f1;border-radius:12px;padding:11px;font-weight:700;color:#2f6745}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero"><div class="brand"><img src="/icon-192.png" alt="파크골프 아이콘"><div><div class="title">우리 파크골프<br>공동 출석부</div><div class="sub">함께라서 더 즐거운 우리들의 파크골프 ♥</div></div></div></section>
+  <section class="datebox"><div class="dateRow"><button id="prev">‹</button><input id="date" class="dateInput" type="date"><button id="next">›</button></div><div id="dateLabel" class="dateLabel"></div><div class="hint">주말·공휴일 모임 날짜를 선택하세요</div></section>
+  <div class="summary"><div class="sum att"><b id="cYes">0</b><span>참석</span></div><div class="sum abs"><b id="cNo">0</b><span>불참</span></div><div class="sum und"><b id="cMaybe">12</b><span>미정</span></div></div>
+  <div id="err"></div>
+  <section class="me"><h2>내 출석을 선택해 주세요</h2><select id="person" class="select"></select><div class="buttons"><button class="status yes" data-status="참석">참석</button><button class="status no" data-status="불참">불참</button><button class="status maybe" data-status="미정">미정</button></div></section>
+  <section class="list"><h2>오늘의 공동 출석 현황</h2><div id="people"><div class="loading">불러오는 중…</div></div><button id="share" class="share">🔗 카카오톡으로 출석부 공유하기</button></section>
+  <div class="footer">12명이 함께 사용하는 공동 출석부 · 저장하면 모두에게 바로 반영됩니다.</div>
+</div>
+<script>
+const PEOPLE=['장선순','진도홍','이미경','박인규','오정화','김성규','박윤경','조성완','김미숙','임임환','이애자','노재돈'];
+const dateEl=document.querySelector('#date'), personEl=document.querySelector('#person'), peopleEl=document.querySelector('#people');
+let data={};
+PEOPLE.forEach(n=>personEl.insertAdjacentHTML('beforeend',`<option>${n}</option>`));
+personEl.value=localStorage.getItem('parkMyName')||PEOPLE[0];
+personEl.addEventListener('change',()=>localStorage.setItem('parkMyName',personEl.value));
+function localISO(d){const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)}
+const today=localISO(new Date()); dateEl.value=today;
+function label(s){const d=new Date(s+'T00:00:00');const days=['일','월','화','수','목','금','토'];return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`}
+async function load(){
+  err.innerHTML=''; peopleEl.innerHTML='<div class="loading">불러오는 중…</div>';
+  try{const r=await fetch('/api/attendance?date='+dateEl.value);const j=await r.json();if(!r.ok)throw Error(j.error);data=j.attendance||{};render();}
+  catch(e){err.innerHTML='<div class="error">공동 저장소에 연결하지 못했어요.<br>'+e.message+'</div>';peopleEl.innerHTML='';}
+}
+function render(){
+ dateLabel.textContent=label(dateEl.value); let y=0,n=0,m=0;PEOPLE.forEach(p=>{const s=data[p]||'미정';if(s==='참석')y++;else if(s==='불참')n++;else m++;});cYes.textContent=y;cNo.textContent=n;cMaybe.textContent=m;
+ document.querySelectorAll('.status').forEach(b=>b.classList.toggle('active',b.dataset.status===data[personEl.value]));
+ peopleEl.innerHTML=PEOPLE.map(p=>{const s=data[p]||'미정';const cls=s==='참석'?'p-yes':s==='불참'?'p-no':'p-maybe';return `<div class="person"><div class="name">${p}${p===personEl.value?'<span class="mine">내 이름</span>':''}</div><div class="pill ${cls}">${s}</div></div>`}).join('');
+}
+document.querySelectorAll('.status').forEach(b=>b.addEventListener('click',async()=>{const status=b.dataset.status;const name=personEl.value;b.disabled=true;try{const r=await fetch('/api/attendance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:dateEl.value,name,status})});const j=await r.json();if(!r.ok)throw Error(j.error);data[name]=status;render();}catch(e){err.innerHTML='<div class="error">저장하지 못했어요. '+e.message+'</div>'}finally{b.disabled=false}}));
+function shift(days){const d=new Date(dateEl.value+'T00:00:00');d.setDate(d.getDate()+days);dateEl.value=localISO(d);load()}
+prev.onclick=()=>shift(-1);next.onclick=()=>shift(1);dateEl.onchange=load;personEl.onchange=()=>{localStorage.setItem('parkMyName',personEl.value);render()};
+share.onclick=async()=>{const url=location.href;const text='우리 파크골프 공동 출석부\n'+url;if(navigator.share){try{await navigator.share({title:'우리 파크골프 공동 출석부',text,url})}catch(e){}}else{await navigator.clipboard.writeText(url);share.textContent='✓ 링크가 복사됐어요. 카카오톡에 붙여넣어 주세요';setTimeout(()=>share.textContent='🔗 카카오톡으로 출석부 공유하기',2500)}};
+load();
+</script>
+</body></html>
