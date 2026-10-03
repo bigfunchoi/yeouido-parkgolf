@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f7d52">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="여의도 파크 부부모임">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon-192.png">
+  <title>여의도 파크 부부모임 출석부</title>
+  <meta name="description" content="주말·공휴일 모임 참석 여부를 체크해 주세요">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yeouido-parkgolf.vercel.app/">
+  <meta property="og:title" content="여의도 파크 부부모임 출석부">
+  <meta property="og:description" content="주말·공휴일 모임 참석 여부를 체크해 주세요">
+  <meta property="og:image" content="https://yeouido-parkgolf.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <style>
+    *{box-sizing:border-box} body{margin:0;background:#f4f8f5;color:#203228;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
+    .wrap{max-width:720px;margin:auto;padding:14px 14px 32px}.hero{background:linear-gradient(135deg,#2f7d52,#5aa96f);color:#fff;border-radius:24px;padding:18px 18px 16px;box-shadow:0 8px 24px #235c3a26}
+    .brand{display:flex;gap:13px;align-items:center}.brand img{width:84px;height:84px;flex:none;border-radius:50%;object-fit:cover;background:#fff;box-shadow:0 0 0 3px #ffffffcc,0 4px 12px #0003}.title{font-weight:800;font-size:22px;line-height:1.25}.sub{font-size:13px;opacity:.9;margin-top:4px}
+    .datebox{margin-top:14px;background:#fff;border-radius:18px;padding:13px;box-shadow:0 4px 16px #234b3312}.dateRow{display:flex;gap:8px;align-items:center}.dateRow button{border:0;background:#edf5ef;border-radius:12px;padding:10px 13px;font-size:18px}.dateInput{flex:1;border:1px solid #d8e5dc;border-radius:12px;padding:10px;font-size:16px;font-weight:700;text-align:center;background:#fff}
+    .dateLabel{text-align:center;margin-top:8px;font-weight:700}.hint{text-align:center;color:#6c7b72;font-size:12px;margin-top:4px}
+    .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.sum{background:#fff;border-radius:16px;padding:11px;text-align:center;box-shadow:0 3px 12px #234b3310}.sum b{display:block;font-size:21px}.sum span{font-size:12px;color:#68776e}.att b{color:#2f7d52}.abs b{color:#c24d4d}.und b{color:#b48625}
+    .me{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 16px #234b3312;margin-bottom:12px}.me h2{font-size:16px;margin:0 0 9px}.select{width:100%;padding:12px;border:1px solid #d8e5dc;border-radius:12px;font-size:15px;background:#fff}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.status{border:0;border-radius:12px;padding:12px;font-weight:800;font-size:14px}.status.active{outline:3px solid #8bc89e;transform:translateY(-1px)}.yes{background:#e1f3e6;color:#21673d}.no{background:#fae5e5;color:#a63e3e}.maybe{background:#fff1cf;color:#8b681c}
+    .list{background:#fff;border-radius:18px;padding:12px;box-shadow:0 4px 16px #234b3312}.list h2{font-size:16px;margin:2px 2px 10px}.person{display:grid;grid-template-columns:1fr auto;align-items:center;padding:10px 4px;border-bottom:1px solid #eef2ef}.person:last-child{border-bottom:0}.name{font-weight:700}.mine{font-size:11px;color:#2f7d52;margin-left:5px}.pill{min-width:54px;text-align:center;padding:6px 9px;border-radius:999px;font-size:12px;font-weight:800}.p-yes{background:#e1f3e6;color:#21673d}.p-no{background:#fae5e5;color:#a63e3e}.p-maybe{background:#fff1cf;color:#8b681c}.loading{text-align:center;color:#78877e;padding:24px}.error{background:#fff0f0;color:#a43c3c;padding:12px;border-radius:12px;margin-bottom:12px;font-size:13px}
+    .footer{text-align:center;color:#809087;font-size:11px;margin-top:14px}.share{margin-top:10px;width:100%;border:0;background:#eff5f1;border-radius:12px;padding:11px;font-weight:700;color:#2f6745}
+    .calHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.calHead b{font-size:17px}.calHead button{border:0;background:#edf5ef;border-radius:12px;width:40px;height:38px;font-size:20px;color:#2f6745}
+    .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}.dow{font-size:12px;font-weight:700;color:#7a887f;padding:4px 0}.dow.sun{color:#d64545}.dow.sat{color:#3a6fd8}
+    .day{position:relative;border:0;background:none;border-radius:12px;height:44px;font-size:15px;font-weight:600;color:#b7c0ba;padding:0;font-family:inherit}
+    .day.meet{color:#203228;background:#f6faf7}.day.sat{color:#3a6fd8;background:#eef3fd}.day.sun,.day.hol{color:#d64545;background:#fdeeee}
+    .day.today{box-shadow:inset 0 0 0 2px #8bc89e}.day.sel{background:#2f7d52!important;color:#fff!important;box-shadow:0 3px 10px #2f7d5255}
+    .day .hn{display:block;font-size:9px;font-weight:700;line-height:1;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:clip}
+    .day.blank{visibility:hidden}
+    .legend{display:flex;justify-content:center;gap:12px;font-size:11px;color:#6c7b72;margin-top:8px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+    .selRow{display:flex;gap:8px;align-items:center;margin-top:12px;border-top:1px solid #eef2ef;padding-top:12px}.selRow button{border:0;background:#edf5ef;border-radius:12px;padding:9px 11px;font-size:13px;font-weight:700;color:#2f6745;white-space:nowrap}
+    .selRow .dateLabel{flex:1;margin:0}.holTag{display:inline-block;margin-left:6px;background:#fdeeee;color:#d64545;font-size:12px;padding:2px 8px;border-radius:999px;vertical-align:1px}
+    .list h2 small{display:block;font-size:12px;font-weight:500;color:#6c7b72;margin-top:3px}
+    .person{grid-template-columns:auto 1fr;gap:8px;padding:9px 2px}.name{font-size:16px;white-space:nowrap}
+    .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;justify-self:end;width:min(100%,222px)}
+    .sb{border:1.5px solid #e2e9e4;background:#fff;color:#9aa69f;border-radius:10px;padding:9px 0;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer}
+    .sb.yes.on{background:#2f7d52;border-color:#2f7d52;color:#fff}.sb.no.on{background:#d05454;border-color:#d05454;color:#fff}.sb.maybe.on{background:#fff1cf;border-color:#e8cf8f;color:#8b681c}
+    .couple{border-bottom:2px solid #dfe8e2;padding:4px 0}.couple:last-child{border-bottom:0}.couple .person{border-bottom:0;padding:5px 2px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero"><div class="brand"><img src="/title.png" alt="여의도 파크골프 부부모임"><div><div class="title">여의도 파크 부부모임<br>출석부</div><div class="sub">함께라서 더 즐거운 우리들의 파크골프 ♥</div></div></div></section>
+  <section class="datebox">
+    <div class="calHead"><button id="mPrev" aria-label="이전 달">‹</button><b id="mTitle"></b><button id="mNext" aria-label="다음 달">›</button></div>
+    <div id="cal" class="cal"></div>
+    <div class="legend"><span><i style="background:#eef3fd;border:1px solid #3a6fd8"></i>토요일</span><span><i style="background:#fdeeee;border:1px solid #d64545"></i>일요일·공휴일</span></div>
+    <div class="selRow"><button id="prev">‹ 이전 모임</button><div id="dateLabel" class="dateLabel"></div><button id="next">다음 모임 ›</button></div>
+    <input id="date" type="hidden">
+  </section>
+  <div class="summary"><div class="sum att"><b id="cYes">0</b><span>참석</span></div><div class="sum abs"><b id="cNo">0</b><span>불참</span></div><div class="sum und"><b id="cMaybe">12</b><span>미정</span></div></div>
+  <div id="err"></div>
+  <section class="list"><h2>출석 체크 <small>내 이름 옆 버튼을 눌러 주세요</small></h2><div id="people"><div class="loading">불러오는 중…</div></div><button id="share" class="share">🔗 카카오톡으로 출석부 공유하기</button></section>
+  <div class="footer">12명이 함께 사용하는 공동 출석부 · 저장하면 모두에게 바로 반영됩니다.</div>
+</div>
+<script src="/holidays.js"></script>
+<script>
+const PEOPLE=['진도홍','장선순','노재돈','이애자','박인규','이미경','조성완','박윤경','김성규','오정화','임임환','김미숙'];
+const dateEl=document.querySelector('#date'), peopleEl=document.querySelector('#people');
+let data={};
+function localISO(d){const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString().slice(0,10)}
+const today=localISO(new Date());
+const HOL=window.HOLIDAYS||{};
+function isMeet(iso){const w=new Date(iso+'T00:00:00').getDay();return w===0||w===6||!!HOL[iso]}
+function addDays(iso,n){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+n);return localISO(d)}
+function nearestMeet(from,dir){let d=from;for(let i=0;i<400;i++){if(isMeet(d))return d;d=addDays(d,dir)}return from}
+dateEl.value=nearestMeet(today,1);
+let viewY,viewM;function syncView(){const d=new Date(dateEl.value+'T00:00:00');viewY=d.getFullYear();viewM=d.getMonth()}syncView();
+function drawCal(){
+  mTitle.textContent=`${viewY}년 ${viewM+1}월`;
+  let h=['일','월','화','수','목','금','토'].map((d,i)=>`<div class="dow ${i===0?'sun':i===6?'sat':''}">${d}</div>`).join('');
+  const first=new Date(viewY,viewM,1).getDay(), last=new Date(viewY,viewM+1,0).getDate();
+  for(let i=0;i<first;i++)h+='<button class="day blank" disabled></button>';
+  for(let d=1;d<=last;d++){const iso=`${viewY}-${String(viewM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const w=(first+d-1)%7;const hol=HOL[iso];
+    let c='day';if(hol)c+=' hol meet';else if(w===0)c+=' sun meet';else if(w===6)c+=' sat meet';
+    if(iso===today)c+=' today';if(iso===dateEl.value)c+=' sel';
+    h+=`<button class="${c}" data-d="${iso}" title="${hol||''}">${d}${hol?`<span class="hn">${hol.replace(' 연휴','')}</span>`:''}</button>`}
+  cal.innerHTML=h;
+  cal.querySelectorAll('.day[data-d]').forEach(b=>b.onclick=()=>{dateEl.value=b.dataset.d;drawCal();load()});
+}
+function pick(iso){dateEl.value=iso;syncView();drawCal();load()}
+mPrev.onclick=()=>{viewM--;if(viewM<0){viewM=11;viewY--}drawCal()};
+mNext.onclick=()=>{viewM++;if(viewM>11){viewM=0;viewY++}drawCal()};
+drawCal();
+function label(s){const d=new Date(s+'T00:00:00');const days=['일','월','화','수','목','금','토'];return `${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`+(HOL[s]?`<span class="holTag">${HOL[s]}</span>`:'')}
+async function load(){
+  err.innerHTML=''; peopleEl.innerHTML='<div class="loading">불러오는 중…</div>';
+  try{const r=await fetch('/api/attendance?date='+dateEl.value);const j=await r.json();if(!r.ok)throw Error(j.error);data=j.attendance||{};render();}
+  catch(e){err.innerHTML='<div class="error">공동 저장소에 연결하지 못했어요.<br>'+e.message+'</div>';peopleEl.innerHTML='';}
+}
+function render(){
+ dateLabel.innerHTML=label(dateEl.value); let y=0,n=0,m=0;PEOPLE.forEach(p=>{const s=data[p]||'미정';if(s==='참석')y++;else if(s==='불참')n++;else m++;});cYes.textContent=y;cNo.textContent=n;cMaybe.textContent=m;
+const row=p=>{const s=data[p]||'미정';return `<div class="person"><div class="name">${p}</div><div class="seg">${['참석','불참','미정'].map(v=>`<button class="sb ${v==='참석'?'yes':v==='불참'?'no':'maybe'}${v===s?' on':''}" data-name="${p}" data-status="${v}">${v}</button>`).join('')}</div></div>`};
+ let h='';for(let i=0;i<PEOPLE.length;i+=2)h+=`<div class="couple">${PEOPLE.slice(i,i+2).map(row).join('')}</div>`;peopleEl.innerHTML=h;
+}
+peopleEl.addEventListener('click',async e=>{const b=e.target.closest('.sb');if(!b||b.classList.contains('on'))return;const name=b.dataset.name,status=b.dataset.status,prevS=data[name]||'미정';
+  err.innerHTML='';data[name]=status;render();
+  try{const r=await fetch('/api/attendance',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:dateEl.value,name,status})});const j=await r.json();if(!r.ok)throw Error(j.error)}
+  catch(e){data[name]=prevS;render();err.innerHTML='<div class="error">'+name+'님 저장하지 못했어요. 다시 눌러 주세요. '+e.message+'</div>'}});
+function shift(dir){pick(nearestMeet(addDays(dateEl.value,dir),dir))}
+prev.onclick=()=>shift(-1);next.onclick=()=>shift(1);
+share.onclick=async()=>{const url=location.href;const text='우리 파크골프 공동 출석부\n'+url;if(navigator.share){try{await navigator.share({title:'우리 파크골프 공동 출석부',text,url})}catch(e){}}else{await navigator.clipboard.writeText(url);share.textContent='✓ 링크가 복사됐어요. 카카오톡에 붙여넣어 주세요';setTimeout(()=>share.textContent='🔗 카카오톡으로 출석부 공유하기',2500)}};
+load();
+</script>
+</body></html>
